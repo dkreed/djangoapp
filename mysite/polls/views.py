@@ -3,9 +3,11 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Choice, Question
-
+from .models import Choice, Question, Comment
 
 class IndexView(generic.ListView):
     template_name = 'polls/index.html'
@@ -36,7 +38,7 @@ class ResultsView(generic.DetailView):
     model = Question
     template_name = 'polls/results.html'
 
-
+@login_required
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     try:
@@ -54,3 +56,25 @@ def vote(request, question_id):
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+
+class UserView(LoginRequiredMixin, generic.ListView):
+    model = User
+    template_name = "polls/users.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['staff'] = [user for user in User.objects.all() if user.is_staff]
+        context['non_staff'] = [user for user in User.objects.all() if not user.is_staff]
+        return context
+
+class CreateCommentView(generic.edit.CreateView):
+    model = Comment
+    template = "polls/add_comment.html"
+    fields = ['question', 'author', 'text', 'created_date']
+
+    def get_success_url(self):
+        return reverse('polls:detail', kwargs={
+            "pk": self.object.question.id
+        })
+
+ 

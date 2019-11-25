@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Question, Choice
+from .models import Question, Choice, Profile, Comment
 
 
 class ChoiceInline(admin.TabularInline):
@@ -19,3 +19,7 @@ class QuestionAdmin(admin.ModelAdmin):
     search_fields = ['question_text']
 
 admin.site.register(Question, QuestionAdmin)
+
+admin.site.register(Profile)
+
+admin.site.register(Comment)

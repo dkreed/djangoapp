@@ -1,5 +1,6 @@
+from django.shortcuts import render
 from django.http import HttpResponse
-
+from django.urls import reverse
 
 def index(request):
-    return HttpResponse("You've finished the initial setup for the 'Django: Beyond the Basics' tutorial.")
+    return render(request, 'polls/david.html')

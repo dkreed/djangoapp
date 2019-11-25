@@ -3,6 +3,7 @@ import datetime
 from django.db import models
 from django.utils import timezone
 
+from django.contrib.auth.models import User
 
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
@@ -27,3 +28,16 @@ class Choice(models.Model):
 
     def __str__(self):
         return self.choice_text
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.CharField(max_length=100, default="Please add your Profile")
+    
+    def __str__(self):
+        return self.user.username
+
+class Comment(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    author = models.CharField(max_length=200)
+    text = models.TextField()
+    created_date = models.DateTimeField(default=timezone.now)

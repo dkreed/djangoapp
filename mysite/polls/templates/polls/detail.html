@@ -1,3 +1,5 @@
+{% include "registration/login_bar.html" %}
+
 <h1>{{ question.question_text }}</h1>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
@@ -10,3 +12,14 @@
 {% endfor %}
 <input type="submit" value="Vote" />
 </form>
+
+{% for comment in question.comment_set.all %}
+    {{ comment.created_date }}
+    by {{ comment.author }}
+    <p>{{ comment.text|title|truncatechars:20 }}</p>
+{% empty %}
+    <p>No comments here yet :(</p>
+{% endfor %}
+
+<a href="{% url 'polls:add_comment' question.id %}">
+    Add comment</a>

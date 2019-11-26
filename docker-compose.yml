@@ -7,8 +7,8 @@ services:
       dockerfile: docker/python/Dockerfile
     volumes:
       - ./mysite:/mysite
+    expose: "8000"
     ports:
-      - 8000:8000
-    command: sleep infinity
+      - "8000:8000"
     
    

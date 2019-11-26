@@ -10,5 +10,5 @@ services:
       - ./mysite:/mysite
    
     ports:
-      - "8000:8000"
+      - "8000"
    

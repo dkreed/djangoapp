@@ -7,4 +7,6 @@ WORKDIR /mysite
 
 RUN pip install -r requirements.txt
 
-CMD ["python", "manage.py", "runserver", "o.o.o.o:8000"]
+CMD ["python", "manage.py", "runserver"]
+
+EXPOSE 8000
